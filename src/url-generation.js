@@ -85,7 +85,7 @@ function setIframe(withTags) {
   const origURL = document.querySelector(".url-input");
   const generatedURL = document.querySelector(".generated-url");
 
-  if (generatedURL.value.length > 0 && withTags) {
+  if (generatedURL.value != "" && withTags) {
     iframe.src = generatedURL.value;
     document.querySelector("[value='with-tags']").checked = true;
   } else if (origURL.value.length > 0) {
@@ -119,6 +119,7 @@ window.onload = function () {
   const originalURL = document.querySelector(".url-input");
   const addTagBtn = document.querySelector(".add-tag");
   const mergeTags = document.querySelectorAll(".merge-tag-info");
+  const generatedURLContainer = document.querySelector(".generated-url");
   let previousURL;
 
   // Autofill merge tag titles if possible
@@ -139,6 +140,13 @@ window.onload = function () {
   originalURL.addEventListener("keyup", () => {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(() => {
+      try {
+        new URL(originalURL.value);
+      } catch {
+        generatedURLContainer.value = "Please enter a valid URL.";
+        return;
+      }
+
       setIframe(false);
     }, 1000);
   });
