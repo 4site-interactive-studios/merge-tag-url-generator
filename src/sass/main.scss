@@ -1,0 +1,23 @@
+.merge-tag-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 20px;
+
+  label {
+    flex-basis: 100%;
+  }
+}
+
+.merge-tag-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.generated-url {
+  font-size: 20px;
+  font-weight: bold;
+  width: 80%;
+  height: 350px;
+}
