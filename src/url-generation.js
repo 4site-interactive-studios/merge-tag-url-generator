@@ -5,10 +5,9 @@ let typingTimer;
 function addMergeTag(title = "", data = "") {
   const tagContainer = document.querySelector(".merge-tag-container");
 
-  const tagNameLabel = document.createElement("label");
-  tagNameLabel.innerHTML = "Merge Tag Name";
   const tagName = document.createElement("input");
   tagName.classList.add("merge-tag-name");
+  tagName.disabled = true;
   tagName.addEventListener("focusout", generateURL);
   tagName.addEventListener("keydown", () => {
     clearTimeout(typingTimer);
@@ -23,7 +22,7 @@ function addMergeTag(title = "", data = "") {
   }
 
   const tagDataLabel = document.createElement("label");
-  tagDataLabel.innerHTML = "Merge Tag Data";
+  tagDataLabel.innerHTML = "=";
   const tagData = document.createElement("textarea");
   tagData.classList.add("merge-tag-data");
   tagData.addEventListener("focusout", generateURL);
@@ -42,7 +41,6 @@ function addMergeTag(title = "", data = "") {
   const tagDiv = document.createElement("div");
   tagDiv.classList.add("merge-tag-info");
 
-  tagDiv.appendChild(tagNameLabel);
   tagDiv.appendChild(tagName);
   tagDiv.appendChild(tagDataLabel);
   tagDiv.appendChild(tagData);
@@ -129,7 +127,10 @@ function generateTags() {
         });
 
         for (let i = 0; i < tagArr[1].length; ++i) {
+          tagArr[1][i] = tagArr[1][i].replace(/\\n/g, "\n");
+
           if (tagArr[2][i] != undefined) {
+            tagArr[2][i] = tagArr[2][i].replace(/\\n/g, "\n");
             addMergeTag(tagArr[1][i], tagArr[2][i]);
           } else {
             addMergeTag(tagArr[1][i]);
@@ -146,7 +147,6 @@ function generateTags() {
 
 window.onload = function () {
   const originalURL = document.querySelector(".url-input");
-  const addTagBtn = document.querySelector(".add-tag");
   const mergeTags = document.querySelectorAll(".merge-tag-info");
   const generatedURLContainer = document.querySelector(".generated-url");
   let previousURL;
@@ -173,8 +173,6 @@ window.onload = function () {
       generateTags();
     }, 1000);
   });
-
-  addTagBtn.addEventListener("click", () => addMergeTag());
 
   mergeTags.forEach((tag) => {
     const tagName = tag.querySelector(".merge-tag-name");
