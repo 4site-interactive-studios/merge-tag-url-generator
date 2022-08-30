@@ -2,7 +2,7 @@ import scss from "./sass/main.scss";
 
 let typingTimer;
 
-function addMergeTag(title = "") {
+function addMergeTag(title = "", data = "") {
   const tagContainer = document.querySelector(".merge-tag-container");
 
   const tagNameLabel = document.createElement("label");
@@ -34,6 +34,10 @@ function addMergeTag(title = "") {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(generateURL, 1000);
   });
+
+  if (data != "") {
+    tagData.value = data;
+  }
 
   const tagDiv = document.createElement("div");
   tagDiv.classList.add("merge-tag-info");
@@ -108,8 +112,8 @@ function generateTags() {
   const pageURL = document.querySelector(".url-input");
   const newURL = document.querySelector(".generated-url");
   const params = `url=${pageURL.value}`;
-  const tagArr = [];
 
+  // Request merge tag data
   const request = new XMLHttpRequest();
   const url =
     "https://apps.4sitestudios.com/merge-tag-url-generator/src/merge-tag-parser.php";
@@ -118,21 +122,18 @@ function generateTags() {
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == 200) {
-      request.responseText
-        .slice(1, -1)
-        .split(",")
-        .forEach((item) => {
-          item = item.slice(1, -1);
-          tagArr.push(item);
-        });
-
+      const tagArr = JSON.parse(request.responseText);
       if (tagArr.length > 0) {
         mergeTags.forEach((tag) => {
           tag.remove();
         });
 
-        for (let i = 0; i < tagArr.length; ++i) {
-          addMergeTag(tagArr[i]);
+        for (let i = 0; i < tagArr[1].length; ++i) {
+          if (tagArr[2][i] != undefined) {
+            addMergeTag(tagArr[1][i], tagArr[2][i]);
+          } else {
+            addMergeTag(tagArr[1][i]);
+          }
         }
 
         newURL.value = "";

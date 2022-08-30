@@ -16,7 +16,7 @@ if(isset($_POST['url'])) {
   preg_match_all($regex, $output, $tagArr);
 
   if(isset($tagArr[1])) {
-    echo json_encode($tagArr[1]);
+    echo json_encode($tagArr);
   } else {
     echo "";
   }

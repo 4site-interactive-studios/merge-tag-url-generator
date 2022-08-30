@@ -97,6 +97,7 @@ var typingTimer;
 
 function addMergeTag() {
   var title = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
   var tagContainer = document.querySelector(".merge-tag-container");
   var tagNameLabel = document.createElement("label");
   tagNameLabel.innerHTML = "Merge Tag Name";
@@ -127,6 +128,11 @@ function addMergeTag() {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(generateURL, 1000);
   });
+
+  if (data != "") {
+    tagData.value = data;
+  }
+
   var tagDiv = document.createElement("div");
   tagDiv.classList.add("merge-tag-info");
   tagDiv.appendChild(tagNameLabel);
@@ -195,8 +201,8 @@ function generateTags() {
   var mergeTags = document.querySelectorAll(".merge-tag-info");
   var pageURL = document.querySelector(".url-input");
   var newURL = document.querySelector(".generated-url");
-  var params = "url=".concat(pageURL.value);
-  var tagArr = [];
+  var params = "url=".concat(pageURL.value); // Request merge tag data
+
   var request = new XMLHttpRequest();
   var url = "https://apps.4sitestudios.com/merge-tag-url-generator/src/merge-tag-parser.php";
   request.open("POST", url, true);
@@ -204,18 +210,19 @@ function generateTags() {
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == 200) {
-      request.responseText.slice(1, -1).split(",").forEach(function (item) {
-        item = item.slice(1, -1);
-        tagArr.push(item);
-      });
+      var tagArr = JSON.parse(request.responseText);
 
       if (tagArr.length > 0) {
         mergeTags.forEach(function (tag) {
           tag.remove();
         });
 
-        for (var i = 0; i < tagArr.length; ++i) {
-          addMergeTag(tagArr[i]);
+        for (var i = 0; i < tagArr[1].length; ++i) {
+          if (tagArr[2][i] != undefined) {
+            addMergeTag(tagArr[1][i], tagArr[2][i]);
+          } else {
+            addMergeTag(tagArr[1][i]);
+          }
         }
 
         newURL.value = "";
