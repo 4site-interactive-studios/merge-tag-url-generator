@@ -190,16 +190,37 @@ function copyURL() {
   navigator.clipboard.writeText(url.value);
 }
 
-function generateTags(array) {
+function generateTags() {
   // Remove previous mergeTags
   var mergeTags = document.querySelectorAll(".merge-tag-info");
-  mergeTags.forEach(function (tag) {
-    tag.remove();
-  });
+  var pageURL = document.querySelector(".url-input");
+  var params = "url=".concat(pageURL.value);
+  var tagArr = [];
+  var request = new XMLHttpRequest();
+  var url = "https://apps.4sitestudios.com/merge-tag-url-generator/src/merge-tag-parser.php";
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-  for (var i = 0; i < array.length; ++i) {
-    addMergeTag(array[i]);
-  }
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      request.responseText.slice(1, -1).split(",").forEach(function (item) {
+        item = item.slice(1, -1);
+        tagArr.push(item);
+      });
+
+      if (tagArr.length > 0) {
+        mergeTags.forEach(function (tag) {
+          tag.remove();
+        });
+
+        for (var i = 0; i < tagArr.length; ++i) {
+          addMergeTag(tagArr[i]);
+        }
+      }
+    }
+  };
+
+  request.send(params);
 }
 
 window.onload = function () {
@@ -207,16 +228,10 @@ window.onload = function () {
   var addTagBtn = document.querySelector(".add-tag");
   var mergeTags = document.querySelectorAll(".merge-tag-info");
   var generatedURLContainer = document.querySelector(".generated-url");
-  var previousURL; // Autofill merge tag titles if possible
-
-  window.addEventListener("message", function (e) {
-    if (originalURL.value != previousURL && e.data && Array.isArray(e.data)) {
-      generateTags(e.data);
-      previousURL = originalURL.value;
-    }
-  });
+  var previousURL;
   originalURL.addEventListener("focusout", function () {
     setIframe(false);
+    generateTags();
   });
   originalURL.addEventListener("keydown", function () {
     clearTimeout(typingTimer);
@@ -232,6 +247,7 @@ window.onload = function () {
       }
 
       setIframe(false);
+      generateTags();
     }, 1000);
   });
   addTagBtn.addEventListener("click", function () {

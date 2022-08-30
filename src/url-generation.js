@@ -102,17 +102,42 @@ function copyURL() {
   navigator.clipboard.writeText(url.value);
 }
 
-function generateTags(array) {
+function generateTags() {
   // Remove previous mergeTags
   const mergeTags = document.querySelectorAll(".merge-tag-info");
+  const pageURL = document.querySelector(".url-input");
+  const params = `url=${pageURL.value}`;
+  const tagArr = [];
 
-  mergeTags.forEach((tag) => {
-    tag.remove();
-  });
+  const request = new XMLHttpRequest();
+  const url =
+    "https://apps.4sitestudios.com/merge-tag-url-generator/src/merge-tag-parser.php";
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-  for (let i = 0; i < array.length; ++i) {
-    addMergeTag(array[i]);
-  }
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      request.responseText
+        .slice(1, -1)
+        .split(",")
+        .forEach((item) => {
+          item = item.slice(1, -1);
+          tagArr.push(item);
+        });
+
+      if (tagArr.length > 0) {
+        mergeTags.forEach((tag) => {
+          tag.remove();
+        });
+
+        for (let i = 0; i < tagArr.length; ++i) {
+          addMergeTag(tagArr[i]);
+        }
+      }
+    }
+  };
+
+  request.send(params);
 }
 
 window.onload = function () {
@@ -122,16 +147,9 @@ window.onload = function () {
   const generatedURLContainer = document.querySelector(".generated-url");
   let previousURL;
 
-  // Autofill merge tag titles if possible
-  window.addEventListener("message", (e) => {
-    if (originalURL.value != previousURL && e.data && Array.isArray(e.data)) {
-      generateTags(e.data);
-      previousURL = originalURL.value;
-    }
-  });
-
   originalURL.addEventListener("focusout", () => {
     setIframe(false);
+    generateTags();
   });
 
   originalURL.addEventListener("keydown", () => {
@@ -148,6 +166,7 @@ window.onload = function () {
       }
 
       setIframe(false);
+      generateTags();
     }, 1000);
   });
 

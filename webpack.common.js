@@ -3,7 +3,6 @@ const path = require("path");
 module.exports = {
   entry: {
     "merge-tag-url": "./src/url-generation.js",
-    "iframe-script": "./src/iframe-script.js",
   },
   optimization: {
     minimize: false,
