@@ -194,6 +194,7 @@ function generateTags() {
   // Remove previous mergeTags
   var mergeTags = document.querySelectorAll(".merge-tag-info");
   var pageURL = document.querySelector(".url-input");
+  var newURL = document.querySelector(".generated-url");
   var params = "url=".concat(pageURL.value);
   var tagArr = [];
   var request = new XMLHttpRequest();
@@ -216,6 +217,8 @@ function generateTags() {
         for (var i = 0; i < tagArr.length; ++i) {
           addMergeTag(tagArr[i]);
         }
+
+        newURL.value = "";
       }
     }
   };
