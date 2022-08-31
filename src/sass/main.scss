@@ -1,13 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
 
-button {
-  background-color: black;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
 p,
 label {
   font-weight: bold;
@@ -28,6 +20,15 @@ input {
   margin: 0 auto;
 }
 
+.en__component--column--1 {
+  width: auto;
+  max-width: 800px;
+}
+
+.en__component--column--2 {
+  width: auto;
+}
+
 .url-input {
   width: 90%;
   margin-top: 15px;
@@ -43,7 +44,7 @@ input {
 }
 
 .merge-tag-data {
-  width: 70%;
+  width: 100%;
 }
 
 .merge-tag-container {
@@ -62,7 +63,7 @@ input {
   font-size: 20px;
   font-weight: bold;
   width: 90%;
-  height: 350px;
+  display: none;
 }
 
 .iframe-choices {
@@ -71,4 +72,22 @@ input {
   [for="without-tags"] {
     margin-left: 15px;
   }
+}
+
+.merge-tag-url {
+  height: calc(101vh - 100px);
+}
+
+.open-url {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.open-url:hover {
+  color: white;
 }

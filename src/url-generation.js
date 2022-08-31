@@ -1,3 +1,4 @@
+import autosize from "autosize";
 import scss from "./sass/main.scss";
 
 let typingTimer;
@@ -52,7 +53,9 @@ function generateURL() {
   const newURLContainer = document.querySelector(".generated-url");
   const mergeTags = document.querySelectorAll(".merge-tag-info");
   const originalURLContainer = document.querySelector(".url-input");
+  const openBtn = document.querySelector(".open-url");
   let newURL;
+  autosize(newURLContainer);
 
   if (originalURLContainer.value.length == 0) {
     newURLContainer.value = "Please enter a valid URL.";
@@ -79,6 +82,8 @@ function generateURL() {
   newURLContainer.value = newURL.href;
   document.querySelector("input[value='with-tags']").checked = true;
   setIframe(true);
+  autosize.update(newURLContainer);
+  openBtn.href = newURL.href;
   return;
 }
 
@@ -137,7 +142,7 @@ function generateTags() {
           }
         }
 
-        newURL.value = "";
+        generateURL();
       }
     }
   };
@@ -149,11 +154,9 @@ window.onload = function () {
   const originalURL = document.querySelector(".url-input");
   const mergeTags = document.querySelectorAll(".merge-tag-info");
   const generatedURLContainer = document.querySelector(".generated-url");
-  let previousURL;
 
   originalURL.addEventListener("focusout", () => {
     setIframe(false);
-    generateTags();
   });
 
   originalURL.addEventListener("keydown", () => {
@@ -209,6 +212,4 @@ window.onload = function () {
     .addEventListener("click", (e) => {
       setIframe(false);
     });
-
-  document.querySelector(".copy-button").addEventListener("click", copyURL);
 };
