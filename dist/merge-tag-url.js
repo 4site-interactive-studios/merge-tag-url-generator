@@ -664,10 +664,7 @@ window.onload = function () {
   var originalURL = document.querySelector(".url-input");
   var mergeTags = document.querySelectorAll(".merge-tag-info");
   var generatedURLContainer = document.querySelector(".generated-url");
-  document.querySelector("[value='with-tags']").checked = true;
-  originalURL.addEventListener("focusout", function () {
-    setIframe(false);
-  });
+  document.querySelector("input[value='with-tags']").checked = true;
   originalURL.addEventListener("keydown", function () {
     clearTimeout(typingTimer);
   });

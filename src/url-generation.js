@@ -159,10 +159,6 @@ window.onload = function () {
 
   document.querySelector("input[value='with-tags']").checked = true;
 
-  originalURL.addEventListener("focusout", () => {
-    setIframe(false);
-  });
-
   originalURL.addEventListener("keydown", () => {
     clearTimeout(typingTimer);
   });
