@@ -81,6 +81,7 @@ function generateURL() {
     }
   });
 
+  newURL.search = newURL.search.replace(/(\?[\w-]+)=&/, "$1&");
   newURLContainer.value = newURL.href;
   document.querySelector("input[value='with-tags']").checked = true;
   setIframe(true);
