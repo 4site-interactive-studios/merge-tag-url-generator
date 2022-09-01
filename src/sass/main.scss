@@ -10,9 +10,12 @@ input {
   border: 1px solid black;
 }
 
+body {
+  background-color: #efefef;
+}
+
 .en__component--row--2 {
   padding: 25px;
-  background-color: #efefef;
 }
 
 .en__component--copyblock {
@@ -74,7 +77,7 @@ input {
 }
 
 .merge-tag-url {
-  height: calc(101vh - 100px);
+  height: calc(100vh - 100px);
 }
 
 .open-url {

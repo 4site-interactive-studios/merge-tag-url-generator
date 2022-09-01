@@ -25,10 +25,12 @@ function addMergeTag(title = "", data = "") {
   const tagDataLabel = document.createElement("label");
   tagDataLabel.innerHTML = "=";
   const tagData = document.createElement("textarea");
+  autosize(tagData);
   tagData.classList.add("merge-tag-data");
   tagData.addEventListener("focusout", generateURL);
-  tagData.addEventListener("keydown", () => {
+  tagData.addEventListener("keydown", (e) => {
     clearTimeout(typingTimer);
+    autosize.update(tagData);
   });
   tagData.addEventListener("keyup", () => {
     clearTimeout(typingTimer);
@@ -155,6 +157,8 @@ window.onload = function () {
   const mergeTags = document.querySelectorAll(".merge-tag-info");
   const generatedURLContainer = document.querySelector(".generated-url");
 
+  document.querySelector("input[value='with-tags']").checked = true;
+
   originalURL.addEventListener("focusout", () => {
     setIframe(false);
   });
@@ -172,7 +176,6 @@ window.onload = function () {
         return;
       }
 
-      setIframe(false);
       generateTags();
     }, 1000);
   });
