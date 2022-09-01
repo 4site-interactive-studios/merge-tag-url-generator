@@ -36,7 +36,7 @@ function addMergeTag(title = "", data = "") {
   });
 
   if (data != "") {
-    tagData.placeholder = data;
+    tagData.value = data;
   }
 
   const tagDiv = document.createElement("div");
