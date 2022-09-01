@@ -549,7 +549,7 @@ function addMergeTag() {
   });
 
   if (data != "") {
-    tagData.value = data;
+    tagData.placeholder = data;
   }
 
   var tagDiv = document.createElement("div");
