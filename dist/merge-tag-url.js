@@ -560,6 +560,9 @@ function addMergeTag() {
   tagDiv.appendChild(tagDataLabel);
   tagDiv.appendChild(tagData);
   tagContainer.appendChild(tagDiv);
+  tagData.dispatchEvent(new KeyboardEvent("keydown", {
+    key: "Backspace"
+  }));
 }
 
 function generateURL() {

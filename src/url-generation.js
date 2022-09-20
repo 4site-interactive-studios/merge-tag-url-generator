@@ -49,6 +49,7 @@ function addMergeTag(title = "", data = "") {
   tagDiv.appendChild(tagData);
 
   tagContainer.appendChild(tagDiv);
+  tagData.dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
 }
 
 function generateURL() {
